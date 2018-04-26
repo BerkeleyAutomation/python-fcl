@@ -30,9 +30,11 @@ First, install FCL using the instructions provided [here](https://github.com/fle
 If you're on Ubuntu 17.04 or newer, you can install FCL using `sudo apt-get install libfcl-dev`.
 Otherwise, just compile FCL from source -- it's quick and easy, and its dependencies are all easily installed via `apt` or `brew`.
 
-In order to install the Python wrappers for FCL, simply run
+Build and install
 ```shell
-pip install python-fcl
+python setup.py build_ext --include-dirs /path/to/headers --library-dirs /path/to/libs
+python setup.py bdist_wheel
+pip install dist/python_fcl-xxx.whl
 ```
 
 ## Objects
