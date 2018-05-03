@@ -23,16 +23,23 @@ This package also supports most of FCL's object shapes, including:
 * Half-Space
 * Plane
 * Mesh
+* OcTree
 
 ## Installation
 
 First, install FCL using the instructions provided [here](https://github.com/flexible-collision-library/fcl).
 If you're on Ubuntu 17.04 or newer, you can install FCL using `sudo apt-get install libfcl-dev`.
 Otherwise, just compile FCL from source -- it's quick and easy, and its dependencies are all easily installed via `apt` or `brew`.
+Second, install [octomap](https://github.com/OctoMap/octomap), which is necessary using OcTree. For Ubuntu, using `sudo apt-get install liboctomap-dev`
 
-In order to install the Python wrappers for FCL, simply run
+Build 
 ```shell
-pip install python-fcl
+python setup.py build_ext --include-dirs /path/to/headers --library-dirs /path/to/libs
+python setup.py bdist_wheel
+```
+Install
+```shell
+pip install dist/python_fcl-xxx.whl
 ```
 
 ## Objects
