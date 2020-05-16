@@ -57,6 +57,14 @@ pip3 install python-fcl
 
 ### Windows
 
+**Using Prebuilt Wheel**
+
+```bash
+pip install python-fcl-win32
+```
+
+**Building From Source**
+
 Building on Windows requires:
 
 * Python3 (e.g. Not tested using Python2)
@@ -65,7 +73,7 @@ Building on Windows requires:
 * MSVC (Visual Studio 16 2019)
 
 > Since the build script places artifacts in `C:\Program Files (x86)`, it is
-necessary to run it using an "Administrator PowerShell" prompt.
+***required*** to run it using an "Administrator PowerShell" prompt.
 
 ```bash
 # Run using Administrator PowerShell prompt. WILL FAIL WITHOUT PROPER ACCESS
