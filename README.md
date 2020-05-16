@@ -57,12 +57,6 @@ pip3 install python-fcl
 
 ### Windows
 
-**Using Prebuilt Wheel**
-
-```bash
-pip install python-fcl-win32
-```
-
 **Building From Source**
 
 Building on Windows requires:
