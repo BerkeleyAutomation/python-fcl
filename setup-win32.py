@@ -95,6 +95,8 @@ setup(
     packages=['fcl'],
     setup_requires=['cython'],
     install_requires=['numpy', 'cython'],
+    package_data={'' : ['*.dll']},
+    include_package_data=True,
     ext_modules=[Extension(
         'fcl.fcl',
         ['fcl/fcl.pyx'],

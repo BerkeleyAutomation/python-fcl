@@ -106,22 +106,17 @@ del -Force -Recurse fcl
 
 cd ../
 
-# Now build Cython extension
-python setup.py install
-Write-Host "Successfully built python-fcl"
-
-# At this point, you cannot import fcl directly in Python because it will fail.
-# This is because it doesn't have the required DLLs. Let's fix that:
-# NOTE: The default SourceFileLoader will find python-fcl's `fcl` package. So
-# let's create a tmp directory and use that to force it to find the one in the
-# `site-packages`'s directory.
-mkdir -Force tmp; cd tmp
-$fcl_dir = $(python -c "import pathlib as p, pkgutil as pk; print(p.Path(pk.get_loader('fcl').get_filename()).parent)")
-Write-Host "Installed into: $fcl_dir. Copying dependent DLLs"
+$fcl_dir = './fcl'
+Write-Host "Copying dependent DLLs"
 ls "C:/Program Files (x86)/octomap/bin/*.dll" | cp -destination $fcl_dir
 cp "C:/Program Files (x86)/ccd/bin/ccd.dll" $fcl_dir
 
 Start-Sleep -s 5
+
+# Now build Cython extension
+python setup-win32.py install
+Write-Host "Successfully built python-fcl"
+
 
 # Now delete all of the installed dependencies (after building python-fcl)
 Write-Host "Removing build directories for Eigen, LibCCD, FCL, and Octomap"

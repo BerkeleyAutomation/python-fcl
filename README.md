@@ -57,6 +57,12 @@ pip3 install python-fcl
 
 ### Windows
 
+**Using Prebuilt Wheel**
+
+```bash
+pip install python-fcl-win32
+```
+
 **Building From Source**
 
 Building on Windows requires:
@@ -78,6 +84,9 @@ cd python-fcl
 # Use CMake to compile/install all dependencies along with installing python-fcl
 requirements/build_win32.ps1
 ```
+
+Running the above script will download, build, and install FCL and any needed
+dependencies.
 
 # Usage Examples
 
