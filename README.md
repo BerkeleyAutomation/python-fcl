@@ -27,15 +27,68 @@ This package also supports most of FCL's object shapes, including:
 
 ## Installation
 
-First, install [octomap](https://github.com/OctoMap/octomap), which is necessary using OcTree. For Ubuntu, using `sudo apt-get install liboctomap-dev`   
-Second, install FCL using the instructions provided [here](https://github.com/flexible-collision-library/fcl).
-If you're on Ubuntu 17.04 or newer, you can install FCL using `sudo apt-get install libfcl-dev`.
-Otherwise, just compile FCL from source -- it's quick and easy, and its dependencies are all easily installed via `apt` or `brew`.
+### Linux
 
-In order to install the Python wrappers for FCL, simply run
-```shell
-pip install python-fcl
+First install needed dependencies:
+
+```bash
+sudo apt-get install liboctomap-dev libfcl-dev
 ```
+
+Then install for your particular Python version:
+
+```bash
+pip3 install python-fcl
+```
+
+### MacOS
+
+First install needed dependencies:
+
+```bash
+brew install fcl eigen octomap libccd
+```
+
+Then install for your particular Python version:
+
+```bash
+pip3 install python-fcl
+```
+
+### Windows
+
+**Using Prebuilt Wheel**
+
+```bash
+pip install python-fcl-win32
+```
+
+**Building From Source**
+
+Building on Windows requires:
+
+* Python3 (e.g. Not tested using Python2)
+* Cython
+* CMake
+* MSVC (Visual Studio 16 2019)
+
+> Since the build script places artifacts in `C:\Program Files (x86)`, it is
+***required*** to run it using an "Administrator PowerShell" prompt.
+
+```bash
+# Run using Administrator PowerShell prompt. WILL FAIL WITHOUT PROPER ACCESS
+
+git clone https://github.com/BerkeleyAutomation/python-fcl
+cd python-fcl
+
+# Use CMake to compile/install all dependencies along with installing python-fcl
+requirements/build_win32.ps1
+```
+
+Running the above script will download, build, and install FCL and any needed
+dependencies.
+
+# Usage Examples
 
 ## Objects
 

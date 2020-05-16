@@ -66,7 +66,7 @@ else:
     raise NotImplementedError(current_platform)
 
 setup(
-    name='python-fcl',
+    name='python-fcl-win32',
     version=__version__,
     description='Python bindings for the Flexible Collision Library',
     long_description='Python bindings for the Flexible Collision Library',
@@ -78,6 +78,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: BSD License',
         'Operating System :: POSIX :: Linux',
+        'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
@@ -88,11 +89,14 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
     keywords='fcl collision distance',
     packages=['fcl'],
     setup_requires=['cython'],
     install_requires=['numpy', 'cython'],
+    package_data={'' : ['*.dll']},
+    include_package_data=True,
     ext_modules=[Extension(
         'fcl.fcl',
         ['fcl/fcl.pyx'],
