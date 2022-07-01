@@ -135,8 +135,9 @@ cdef extern from "fcl/narrowphase/distance_result.h" namespace "fcl":
 cdef extern from "fcl/narrowphase/distance_request.h" namespace "fcl":
     cdef cppclass DistanceRequestd:
         bool enable_nearest_points
+        bool enable_signed_distance
         GJKSolverType gjk_solver_type
-        DistanceRequestd(bool enable_nearest_points_, GJKSolverType gjk_solver_type_) except +
+        DistanceRequestd(bool enable_nearest_points_, bool enable_signed_distance, GJKSolverType gjk_solver_type_) except +
 
 cdef extern from "fcl/geometry/collision_geometry.h" namespace "fcl":
     cdef enum OBJECT_TYPE:
@@ -408,4 +409,3 @@ cdef extern from "fcl/geometry/octree/octree.h" namespace "fcl":
         # Constructing
         OcTreed(double resolution) except +
         OcTreed(shared_ptr[octomap.OcTree]& tree_) except +
-

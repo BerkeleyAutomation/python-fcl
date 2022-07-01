@@ -665,6 +665,7 @@ def distance(CollisionObject o1, CollisionObject o2,
     cdef double dis = defs.distance(o1.thisptr, o2.thisptr,
                                     defs.DistanceRequestd(
                                         <bool?> request.enable_nearest_points,
+                                        <bool?> request.enable_signed_distance,
                                         <defs.GJKSolverType?> request.gjk_solver_type
                                     ),
                                     cresult)

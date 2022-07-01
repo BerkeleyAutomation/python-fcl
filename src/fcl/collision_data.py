@@ -117,10 +117,14 @@ class ContinuousCollisionResult:
 
 
 class DistanceRequest:
-    def __init__(self,
-                 enable_nearest_points=False,
-                 gjk_solver_type=GJKSolverType.GST_LIBCCD):
+    def __init__(
+        self,
+        enable_nearest_points=False,
+        enable_signed_distance=False,
+        gjk_solver_type=GJKSolverType.GST_LIBCCD,
+    ):
         self.enable_nearest_points = enable_nearest_points
+        self.enable_signed_distance = enable_signed_distance
         self.gjk_solver_type = gjk_solver_type
 
 
