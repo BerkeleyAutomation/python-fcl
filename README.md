@@ -362,4 +362,4 @@ for coll_pair in objs_in_collision:
 ```
 >>> Object obj1 in collision with object obj2!
 ```
-For more examples, see `example/example.py`.
+For more examples, see `examples/example.py`.

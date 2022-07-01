@@ -684,13 +684,14 @@ def distance(CollisionObject o1, CollisionObject o2,
                                     ),
                                     cresult)
 
-    result.min_distance = min(cresult.min_distance, result.min_distance)
-    result.nearest_points = [vec3d_to_numpy(cresult.nearest_points[0]),
-                             vec3d_to_numpy(cresult.nearest_points[1])]
-    result.o1 = c_to_python_collision_geometry(cresult.o1, o1, o2)
-    result.o2 = c_to_python_collision_geometry(cresult.o2, o1, o2)
-    result.b1 = cresult.b1
-    result.b2 = cresult.b2
+    if result.min_distance > cresult.min_distance:
+        result.min_distance = cresult.min_distance
+        result.nearest_points = [vec3d_to_numpy(cresult.nearest_points[0]),
+                                vec3d_to_numpy(cresult.nearest_points[1])]
+        result.o1 = c_to_python_collision_geometry(cresult.o1, o1, o2)
+        result.o2 = c_to_python_collision_geometry(cresult.o2, o1, o2)
+        result.b1 = cresult.b1
+        result.b2 = cresult.b2
     return dis
 
 ###############################################################################
