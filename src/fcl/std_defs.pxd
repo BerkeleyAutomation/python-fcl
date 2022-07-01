@@ -8,5 +8,3 @@ cdef extern from "<iostream>" namespace "std":
 
     cdef cppclass stringstream(iostream):
         stringstream() except +
-
-

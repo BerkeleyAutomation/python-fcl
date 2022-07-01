@@ -1,4 +1,5 @@
-cimport std_defs as std 
+cimport std_defs as std
+
 
 cdef extern from "octomap/OccupancyOcTreeBase.h" namespace "octomap":
     # Cython only accepts type template parameters.
@@ -14,6 +15,5 @@ cdef extern from "octomap/OccupancyOcTreeBase.h" namespace "octomap":
 
 cdef extern from "octomap/OcTree.h" namespace "octomap":
     cdef cppclass OcTree(OccupancyOcTreeBase):
-        # Constructing 
+        # Constructing
         OcTree(double resolution) except +
-

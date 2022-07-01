@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [tool.cibuildwheel]
 skip = "pp*"
 test-requires = "pytest"
-test-command = "pytest {package}/test"
+test-command = "pytest {package}/tests"
 
 [tool.cibuildwheel.linux]
 before-all = "bash build_dependencies/install_linux.sh"

@@ -1,20 +1,35 @@
 # cython: language_level=2
+from libc.stdlib cimport free
+from libc.string cimport memcpy
 from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libc.stdlib cimport free
-from libc.string cimport memcpy
+
 import inspect
 
-from cython.operator cimport dereference as deref, preincrement as inc, address
 cimport numpy as np
+from cython.operator cimport address
+from cython.operator cimport dereference as deref
+from cython.operator cimport preincrement as inc
+
 import numpy
+
 ctypedef np.float64_t DOUBLE_t
 
 cimport fcl_defs as defs
-cimport octomap_defs as octomap 
-cimport std_defs as std 
-from collision_data import Contact, CostSource, CollisionRequest, ContinuousCollisionRequest, CollisionResult, ContinuousCollisionResult, DistanceRequest, DistanceResult
+cimport octomap_defs as octomap
+cimport std_defs as std
+
+from collision_data import (
+    CollisionRequest,
+    CollisionResult,
+    Contact,
+    ContinuousCollisionRequest,
+    ContinuousCollisionResult,
+    CostSource,
+    DistanceRequest,
+    DistanceResult,
+)
 
 """
 Eigen::Transform linear and translation parts are returned as Eigen::Block
@@ -440,7 +455,7 @@ cdef class OcTree(CollisionGeometry):
         cdef vector[char] vd = data
         ss.write(vd.data(), len(data))
 
-        self.tree = new octomap.OcTree(r) 
+        self.tree = new octomap.OcTree(r)
         self.tree.readBinaryData(ss)
         self.thisptr = new defs.OcTreed(defs.shared_ptr[octomap.OcTree](self.tree))
 

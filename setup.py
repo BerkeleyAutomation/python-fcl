@@ -1,8 +1,8 @@
 import os
 import sys
 
-from setuptools import Extension, setup
 from Cython.Build import cythonize
+from setuptools import Extension, setup
 
 INSTALL_PREFIX_WIN = "deps\\install"
 
