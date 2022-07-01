@@ -17,6 +17,7 @@ This package also supports most of FCL's object shapes, including:
 * Ellipsoid
 * Capsule
 * Cone
+* Convex
 * Cylinder
 * Half-Space
 * Plane
@@ -25,10 +26,11 @@ This package also supports most of FCL's object shapes, including:
 
 ## Installation
 
-First, install [octomap](https://github.com/OctoMap/octomap), which is necessary using OcTree. For Ubuntu, using `sudo apt-get install liboctomap-dev`   
+First, install [octomap](https://github.com/OctoMap/octomap), which is necessary to use OcTree. For Ubuntu, use `sudo apt-get install liboctomap-dev`.
 Second, install FCL using the instructions provided [here](https://github.com/flexible-collision-library/fcl).
 If you're on Ubuntu 17.04 or newer, you can install FCL using `sudo apt-get install libfcl-dev`.
 Otherwise, just compile FCL from source -- it's quick and easy, and its dependencies are all easily installed via `apt` or `brew`.
+Note: the provided install scripts (under `build_dependencies`) can automate this process as well.
 
 In order to install the Python wrappers for FCL, simply run
 ```shell
@@ -39,8 +41,7 @@ pip install python-fcl
 
 ### Collision Objects
 The primary construct in FCL is the `CollisionObject`, which forms the backbone of all collision and distance computations.
-A `CollisionObject` consists of two components -- its geometry, defined by a `CollisionGeometry` object,
-  and its pose, defined by a `Transform` object.
+A `CollisionObject` consists of two components -- its geometry, defined by a `CollisionGeometry` object, and its pose, defined by a `Transform` object.
 
 #### Collision Geometries
 There are two main types of `CollisionGeometry` objects -- geometric primitives, such as boxes and spheres,
@@ -86,6 +87,20 @@ m = fcl.BVHModel()
 m.beginModel(len(verts), len(tris))
 m.addSubModel(verts, tris)
 m.endModel()
+```
+
+If the mesh is convex, such as the example above, you can also wrap it in the `Convex` class. Note that the instantiation is a bit different because the `Convex` class supports arbitrary polygons for each face of the convex object.
+```python
+verts = np.array([[1.0, 1.0, 1.0],
+                  [2.0, 1.0, 1.0],
+                  [1.0, 2.0, 1.0],
+                  [1.0, 1.0, 2.0]])
+tris  = np.array([[0,2,1],
+                  [0,3,2],
+                  [0,1,3],
+                  [1,2,3]])
+faces = np.concatenate((3 * np.ones((len(tris), 1), dtype=np.int64), tris), axis=1).flatten()
+c = fcl.Convex(verts, len(tris), faces)
 ```
 
 #### Transforms

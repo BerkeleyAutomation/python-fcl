@@ -332,6 +332,20 @@ cdef class Cone(CollisionGeometry):
         def __set__(self, value):
             (<defs.Coned*> self.thisptr).lz = <double?> value
 
+cdef class Convex(CollisionGeometry):
+    def __cinit__(self, vertices, num_faces, faces):
+        cdef vector[defs.Vector3d] vs
+        cdef vector[int] fs
+        for vert in vertices:
+            vs.push_back(numpy_to_vec3d(vert))
+        for face in faces:
+            fs.push_back(face)
+        self.thisptr = new defs.Convexd(defs.make_shared[vector[defs.Vector3d]](vs), num_faces, defs.make_shared[vector[int]](fs))
+
+    property num_faces:
+        def __get__(self):
+            return (<defs.Convexd*> self.thisptr).getFaceCount()
+
 cdef class Cylinder(CollisionGeometry):
     def __cinit__(self, radius, lz):
         self.thisptr = new defs.Cylinderd(radius, lz)

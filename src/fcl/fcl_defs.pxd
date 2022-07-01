@@ -1,9 +1,10 @@
+cimport octomap_defs as octomap
 from libcpp cimport bool
+from libcpp.memory cimport make_shared, shared_ptr
+from libcpp.set cimport set
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libcpp.set cimport set
-from libcpp.memory cimport shared_ptr
-cimport octomap_defs as octomap
+
 
 cdef extern from "Python.h":
        ctypedef struct PyObject
@@ -231,12 +232,8 @@ cdef extern from "fcl/geometry/shape/cylinder.h" namespace "fcl":
 
 cdef extern from "fcl/geometry/shape/convex.h" namespace "fcl":
     cdef cppclass Convexd(ShapeBased):
-        Convexd(Vector3d* plane_nomals_,
-               double* plane_dis_,
-               int num_planes,
-               Vector3d* points_,
-               int num_points_,
-               int* polygons_) except +
+        Convexd(const shared_ptr[const vector[Vector3d]]& vertices, int num_faces, const shared_ptr[const vector[int]]& faces) except +
+        int getFaceCount()
 
 cdef extern from "fcl/geometry/shape/halfspace.h" namespace "fcl":
     cdef cppclass Halfspaced(ShapeBased):
