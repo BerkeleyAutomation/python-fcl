@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel", "oldest-supported-numpy", "Cython"]
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-skip = "pp*"
+skip = ["pp*", "*musllinux*"]
 test-requires = "pytest"
 test-command = "pytest {package}/tests"
 
@@ -15,5 +15,5 @@ archs = ["x86_64"]
 before-all = "bash build_dependencies/install_macos.sh"
 
 [tool.cibuildwheel.windows]
-before-all = "powershell build_dependencies\\install_windows_ci.ps1"
+before-all = "powershell build_dependencies\\install_windows.ps1"
 archs = ["AMD64"]

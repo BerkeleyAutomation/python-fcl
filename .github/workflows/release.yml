@@ -48,8 +48,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build wheels
-      uses: pypa/cibuildwheel@v2.0.0
-    - uses: actions/upload-artifact@v2
+      uses: pypa/cibuildwheel@v2.7.0
+    - uses: actions/upload-artifact@v3
       with:
         path: ./wheelhouse/*.whl
     - uses: xresloader/upload-to-github-release@v1
@@ -60,16 +60,17 @@ jobs:
         overwrite: true
         draft: false
         update_latest_release: true
-
+  
   upload_pypi:
-    needs: [build_wheels]
+    if: contains(needs.create_release.outputs.mod_files, 'src/fcl/version.py')
+    needs: [create_release, build_wheels]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: artifact
           path: dist
-      - uses: pypa/gh-action-pypi-publish@v1.4.2
+      - uses: pypa/gh-action-pypi-publish@v1.5.0
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}

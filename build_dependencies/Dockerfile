@@ -1,10 +1,6 @@
 # NOTE: this docker file is only for local testing of the build
-# it should be copied or symlinked up one directory as docker
-# can't go into parent directories
 # example of testing a build locally:
-
-# ln -sf requirements/Dockerfile .
-# docker build . -t pythonfcl
+# docker build . -t pythonfcl -f build_dependencies/Dockerfile
 
 FROM quay.io/pypa/manylinux2010_x86_64:latest
 
@@ -24,6 +20,6 @@ RUN pip install numpy cython
 # build the python-fcl module
 COPY . /python_fcl
 RUN pip wheel /python_fcl --no-deps -w wheelhouse/
-RUN pip install /python_fcl --no-index -f  /wheelhouse
+RUN pip install python_fcl --no-index -f /wheelhouse
 RUN ls /wheelhouse
-RUN auditwheel repair wheelhouse/python_fcl-0.6.1-cp39-cp39-linux_x86_64.whl --plat manylinux2010_x86_64 -w /wheelhouse
+RUN auditwheel repair wheelhouse/python_fcl-0.7.0-cp39-cp39-linux_x86_64.whl -w /wheelhouse

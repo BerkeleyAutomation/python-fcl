@@ -1,6 +1,6 @@
 <#
 Originally based on script written by Pebaz (https://github.com/Pebaz/python-fcl/blob/master/requirements/build_win32.ps1)
-but with many modification in order to use fcl 0.6.1 and install dependencies without admin rights.
+but with many modifications in order to use fcl 0.7.0 and install dependencies without admin rights.
 
 This script builds fcl and it's dependencies for python-fcl on Windows.
 
@@ -18,9 +18,9 @@ $base_dir = Get-Location
 mkdir -p deps; Set-Location deps
 
 # Build options
-$generator = "Visual Studio 16 2019"
+$generator = "Visual Studio 17 2022"
 
-# All compiled depencies will be install in following folder
+# All compiled dependencies will be installed in following folder
 $install_dir = "$base_dir\deps\install"
 
 
@@ -61,7 +61,7 @@ Set-Location ..
 # ------------------------------------------------------------------------------
 # Octomap
 Write-Host "Building Octomap"
-git clone --depth 1 --branch v1.8.0 https://github.com/OctoMap/octomap
+git clone --depth 1 --branch v1.9.8 https://github.com/OctoMap/octomap
 Set-Location octomap
 
 cmake -B build `
@@ -80,7 +80,7 @@ Set-Location ..
 # ------------------------------------------------------------------------------
 # FCL
 Write-Host "Building FCL"
-git clone --depth 1 --branch v0.6.1 https://github.com/flexible-collision-library/fcl
+git clone --depth 1 --branch v0.7.0 https://github.com/ambi-robotics/fcl.git
 Set-Location fcl
 
 cmake -B build `

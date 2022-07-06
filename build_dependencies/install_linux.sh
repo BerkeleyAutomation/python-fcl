@@ -1,6 +1,9 @@
+# exit immediately on any failed step
+set -xe
+
 mkdir -p deps
 cd deps
-get eigen
+
 curl -OL https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.gz
 tar -zxf eigen-3.3.9.tar.gz
 
@@ -8,30 +11,30 @@ rm -rf libccd
 git clone --depth 1 --branch v2.1 https://github.com/danfis/libccd.git
 
 rm -rf octomap 
-git clone --depth 1 --branch v1.8.0 https://github.com/OctoMap/octomap.git
+git clone --depth 1 --branch v1.9.8 https://github.com/OctoMap/octomap.git
 
 rm -rf fcl
-git clone --depth 1 --branch v0.6.1 https://github.com/flexible-collision-library/fcl.git
+git clone --depth 1 --branch v0.7.0 https://github.com/ambi-robotics/fcl.git
 
-echo "Install eigen"
+# Install eigen
 cmake -B build -S eigen-3.3.9
 cmake --install build
 
-echo "Build and install libccd"
+# Build and install libccd
 cd libccd
 cmake .
 make -j4
 make install
 cd ..
 
-echo "Build and install octomap"
+# Build and install octomap
 cd octomap 
-cmake .
+cmake . -D CMAKE_BUILD_TYPE=Release -D BUILD_OCTOVIS_SUBPROJECT=OFF -D BUILD_DYNAMICETD3D_SUBPROJECT=OFF
 make -j4
 make install
 cd ..
 
-echo "Build and install fcl"
+# Build and install fcl
 cd fcl
 cmake .
 make -j4
