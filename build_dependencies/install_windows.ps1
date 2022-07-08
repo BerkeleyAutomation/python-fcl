@@ -52,6 +52,7 @@ cmake -B build `
     -D CMAKE_BUILD_TYPE=Release `
     -G $generator `
     -D BUILD_SHARED_LIBS=ON `
+    -D ENABLE_DOUBLE_PRECISION=ON `
     -D CMAKE_INSTALL_PREFIX=$install_dir
 cmake --build build --config Release --target install
 
