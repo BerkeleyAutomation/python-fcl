@@ -1,4 +1,78 @@
 # python-fcl
+### Python Binding of FCL Library with Multi-threading Support
+
+#### Picklable objects for multithreading support.
+
+Sometime we have a list of queries to run where each query is independent of each other. In such case, we can create a thread pool and copy the same environment in each thread to run queries in parallel. The following code gives an example of doing this:
+
+```python
+import fcl
+import numpy as np
+from multiprocessing import Pool
+
+
+class CustomEnv:
+    def __init__(self) -> None:
+        verts1 = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+        tris1 = np.array([[0, 2, 1], [0, 3, 2], [0, 1, 3], [1, 2, 3]])
+        self.mesh1 = fcl.BVHModel()
+        self.mesh1.beginModel(len(verts1), len(tris1))
+        self.mesh1.addSubModel(verts1, tris1)
+        self.mesh1.endModel()
+
+        verts2 = verts1 - np.array([[0.0, 1.5, 0.0]])
+        tris2 = tris1
+
+        self.mesh2 = fcl.BVHModel()
+        self.mesh2.beginModel(len(verts2), len(tris2))
+        self.mesh2.addSubModel(verts2, tris2)
+        self.mesh2.endModel()
+
+        R = np.eye(3)
+        T = np.zeros(3)
+
+        tf = fcl.Transform(R, T)
+
+        self.obj1 = fcl.CollisionObject(self.mesh1, tf)
+        self.obj2 = fcl.CollisionObject(self.mesh2, tf)
+
+    def __call__(self, theta) -> bool:
+        R = np.array([[np.cos(theta), -np.sin(theta), 0], [np.sin(theta), np.cos(theta), 0], [0, 0, 1]])
+        self.obj2.setRotation(R)
+
+        request = fcl.CollisionRequest()
+        result = fcl.CollisionResult()
+
+        ret = fcl.collide(self.obj1, self.obj2, request, result)
+
+        return theta, ret
+
+
+if __name__ == "__main__":
+    myEnv = CustomEnv()
+
+    theta = np.linspace(0.0, 2.0 * np.pi, 360)
+    with Pool(processes=4) as pool:
+        for a, b in pool.map(myEnv, theta):
+            print(a / np.pi * 180, b)
+```
+
+However, objects like `fcl.BVHModel`, `fcl.CollisionObject` are ==unpicklable==, making it unable to serialize them, and de-serialize them in threads:
+
+```shell
+TypeError
+no default __reduce__ due to non-trivial __cinit__
+  File "./python-fcl/tests/test_multithreading.py", line 48, in <module>
+    for a, b in pool.map(myEnv, theta):
+TypeError: no default __reduce__ due to non-trivial __cinit__
+```
+
+My solution to address this issue is to derive subclasses from those `Cython` class, add `__init__` method to cache input arguments and `__reduce__` method to return the cached data for pickling.
+
+Currently only support `fcl.Transform`, `fcl.BVHModel`, `fcl.CollisionObject`, with this commit and a simple magic import: `from fcl import fcl2 as fcl`, the above example script can run in parallel.
+
+
+
 ### Python Interface for the Flexible Collision Library
 
 Python-FCL is an (unofficial) Python interface for the [Flexible Collision Library (FCL)](https://github.com/flexible-collision-library/fcl),
