@@ -248,8 +248,8 @@ cdef extern from "fcl/geometry/shape/plane.h" namespace "fcl":
         double d
 
 cdef extern from "fcl/broadphase/broadphase_collision_manager.h" namespace "fcl":
-    ctypedef bool (*CollisionCallBack)(CollisionObjectd* o1, CollisionObjectd* o2, void* cdata)
-    ctypedef bool (*DistanceCallBack)(CollisionObjectd* o1, CollisionObjectd* o2, void* cdata, double& dist)
+    ctypedef bool (*CollisionCallBack)(CollisionObjectd* o1, CollisionObjectd* o2, void* cdata) except? -1
+    ctypedef bool (*DistanceCallBack)(CollisionObjectd* o1, CollisionObjectd* o2, void* cdata, double& dist) except? -1
 
 cdef extern from "fcl/broadphase/broadphase_dynamic_AABB_tree.h" namespace "fcl":
     cdef cppclass DynamicAABBTreeCollisionManagerd:
