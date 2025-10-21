@@ -1,9 +1,12 @@
 # exit immediately on any failed step
 set -xe
 
+# get cmake from pip so we can version-lock
 pip install cmake==3.31.6
+# Set CMAKE variable to use the cmake in the same directory as python
+export CMAKE="$(dirname $(which python))/cmake"
 
-cmake --version
+$CMAKE --version
 
 mkdir -p deps
 cd deps
@@ -21,26 +24,26 @@ rm -rf fcl
 git clone --depth 1 --branch v0.7.0 https://github.com/ambi-robotics/fcl.git
 
 # Install eigen
-cmake -B build -S eigen-3.3.9
-cmake --install build
+$CMAKE -B build -S eigen-3.3.9
+$CMAKE --install build
 
 # Build and install libccd
 cd libccd
-cmake . -D ENABLE_DOUBLE_PRECISION=ON
+$CMAKE . -D ENABLE_DOUBLE_PRECISION=ON
 make -j4
 make install
 cd ..
 
 # Build and install octomap
 cd octomap
-cmake . -D CMAKE_BUILD_TYPE=Release -D BUILD_OCTOVIS_SUBPROJECT=OFF -D BUILD_DYNAMICETD3D_SUBPROJECT=OFF
+$CMAKE . -D CMAKE_BUILD_TYPE=Release -D BUILD_OCTOVIS_SUBPROJECT=OFF -D BUILD_DYNAMICETD3D_SUBPROJECT=OFF
 make -j4
 make install
 cd ..
 
 # Build and install fcl
 cd fcl
-cmake .
+$CMAKE .
 make -j4
 make install
 cd ..

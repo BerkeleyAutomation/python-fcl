@@ -97,7 +97,7 @@ ignore = [
 
 
 [tool.cibuildwheel]
-skip = ["pp*", "*musllinux*"]
+skip = ["*musllinux*"]
 test-requires = "pytest"
 test-command = "pytest {package}/tests"
 
