@@ -97,12 +97,13 @@ ignore = [
 
 
 [tool.cibuildwheel]
-skip = ["pp*", "*musllinux*"]
+skip = ["*musllinux*"]
 test-requires = "pytest"
 test-command = "pytest {package}/tests"
 
 [tool.cibuildwheel.linux]
 before-all = "bash build_dependencies/install_linux.sh"
+repair-wheel-command = "LD_LIBRARY_PATH=/usr/local/lib64 auditwheel repair -w {dest_dir} {wheel}"
 archs = ["x86_64"]
 
 [tool.cibuildwheel.macos]

@@ -43,7 +43,7 @@ def get_include_dirs():
 
 def get_libraries_dir():
     if is_nix_platform(sys.platform):
-        lib_dirs = ["/usr/lib", "/usr/local/lib"]
+        lib_dirs = ["/usr/lib", "/usr/local/lib", "/usr/lib64", "/usr/local/lib64"]
 
         if "LD_LIBRARY_PATH" in os.environ:
             lib_dirs += os.environ["LD_LIBRARY_PATH"].split(":")
