@@ -2,6 +2,8 @@
 set -xe
 pip install cmake==3.31.6
 
+cmake --version
+
 mkdir -p deps
 cd deps
 
