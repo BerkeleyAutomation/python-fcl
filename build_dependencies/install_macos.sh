@@ -1,6 +1,6 @@
 # exit immediately on any failed step
 set -xe
-pip install cmake=3.31.6
+pip install cmake==3.31.6
 
 mkdir -p deps
 cd deps
