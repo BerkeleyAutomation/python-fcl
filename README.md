@@ -37,6 +37,13 @@ In order to install the Python wrappers for FCL, simply run
 pip install python-fcl
 ```
 
+For macos, using
+```shell
+CPATH=$(brew --prefix)/include:$(brew --prefix)/include/eigen3 \
+LD_LIBRARY_PATH=$(brew --prefix)/lib \
+pip install python-fcl
+```
+
 ## Objects
 
 ### Collision Objects
