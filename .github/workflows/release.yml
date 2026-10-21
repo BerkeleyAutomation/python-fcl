@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
   build_wheels:
     name: Build wheel on ${{matrix.platform}}
@@ -13,10 +16,12 @@ jobs:
       matrix:
         platform: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest, macos-15-intel]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.2.1
-      - uses: actions/upload-artifact@v4
+        uses: pypa/cibuildwheel@8c2dcd2e96041a619f5ff03c9638d7941e2553a4 # v4.3.3
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           path: ./wheelhouse/*.whl
           name: wheels-${{ matrix.platform }}
@@ -28,38 +33,41 @@ jobs:
     permissions:
       id-token: write
     steps:
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
       with:
         python-version: "3.12"
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
       with:
         path: dist
         pattern: wheels-*
         merge-multiple: true
-    - uses: pypa/gh-action-pypi-publish@v1.13.0
+    - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
   create_release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     needs: [build_wheels, upload_pypi]
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Tag Version
         id: set_tag
         run: |
           export VER=v$(python -c "exec(open('src/fcl/version.py','r').read());print(__version__)")
           echo "tag_name=${VER}" >> $GITHUB_OUTPUT
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           path: dist
           pattern: wheels-*
           merge-multiple: true
-      - uses: ncipollo/release-action@v1.14.0
+      - uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           artifacts: "dist/*"
           tag: ${{ steps.set_tag.outputs.tag_name }}

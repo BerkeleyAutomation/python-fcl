@@ -23,12 +23,21 @@ $generator = "Visual Studio 17 2022"
 # All compiled dependencies will be installed in following folder
 $install_dir = "$base_dir\deps\install"
 
+# Clone a tag and refuse to build if it doesn't point at the expected commit
+function Get-PinnedRepo($url, $tag, $sha, $dir) {
+    git clone --depth 1 --branch $tag $url $dir
+    $head = git -C $dir rev-parse HEAD
+    if ($head -ne $sha) { throw "$dir is at $head, expected $sha" }
+}
+
 
 #------------------------------------------------------------------------------
 # Eigen
 Write-Host "Building Eigen"
 $eigen_ver = "3.3.9"
 Invoke-WebRequest -Uri https://gitlab.com/libeigen/eigen/-/archive/$eigen_ver/eigen-$eigen_ver.tar.gz -Outfile eigen-$eigen_ver.tar.gz
+$eigen_sha256 = "7985975b787340124786f092b3a07d594b2e9cd53bbfe5f3d9b1daee7d55f56f"
+if ((Get-FileHash "eigen-$eigen_ver.tar.gz" -Algorithm SHA256).Hash -ne $eigen_sha256) { throw "eigen-$eigen_ver.tar.gz checksum mismatch" }
 tar -zxf "eigen-$eigen_ver.tar.gz"
 Set-Location "eigen-$eigen_ver"
 
@@ -45,7 +54,7 @@ Set-Location ..
 # ------------------------------------------------------------------------------
 # LibCCD
 Write-Host "Building LibCCD"
-git clone --depth 1 --branch v2.1 https://github.com/danfis/libccd
+Get-PinnedRepo https://github.com/danfis/libccd v2.1 7931e764a19ef6b21b443376c699bbc9c6d4fba8 libccd
 Set-Location libccd
 
 cmake -B build `
@@ -62,7 +71,7 @@ Set-Location ..
 # ------------------------------------------------------------------------------
 # Octomap
 Write-Host "Building Octomap"
-git clone --depth 1 --branch v1.9.8 https://github.com/OctoMap/octomap
+Get-PinnedRepo https://github.com/OctoMap/octomap v1.9.8 d417c181868be79931ec94fd1a407c323e9f0fd3 octomap
 Set-Location octomap
 
 cmake -B build `
@@ -81,7 +90,7 @@ Set-Location ..
 # ------------------------------------------------------------------------------
 # FCL
 Write-Host "Building FCL"
-git clone --depth 1 --branch v0.7.0 https://github.com/ambi-robotics/fcl.git
+Get-PinnedRepo https://github.com/ambi-robotics/fcl.git v0.7.0 06d38ed83d7bf33a0eeb7acb8e1d8edf13b12fb9 fcl
 Set-Location fcl
 
 cmake -B build `

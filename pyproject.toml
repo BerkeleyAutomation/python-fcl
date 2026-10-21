@@ -26,12 +26,13 @@ classifiers = [
     "Operating System :: MacOS",
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 keywords = ["fcl collision distance"]
@@ -111,3 +112,6 @@ repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"
 [tool.cibuildwheel.windows]
 before-all = "powershell build_dependencies\\install_windows.ps1"
 archs = ["AMD64"]
+# cibuildwheel 4 defaults to delvewheel, but the dependency DLLs
+# are already copied into the package by install_windows.ps1
+repair-wheel-command = ""
