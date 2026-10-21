@@ -2,15 +2,20 @@ name: Build Pull Requests
 
 on: [pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   formatting:
     name: Check Formatting
     runs-on: ubuntu-latest
     steps:
       - name: Check out source repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up Python environment
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
       - name: ruff
@@ -26,10 +31,12 @@ jobs:
       matrix:
         platform: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest, macos-15-intel]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.2.1
-      - uses: actions/upload-artifact@v4
+        uses: pypa/cibuildwheel@8c2dcd2e96041a619f5ff03c9638d7941e2553a4 # v4.3.3
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           path: ./wheelhouse/*.whl
           name: wheels-${{ matrix.platform }}
